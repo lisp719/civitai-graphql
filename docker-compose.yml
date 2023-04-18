@@ -1,7 +1,10 @@
 services:
   node:
     image: node:lts
+    command: npm start
     user: node
+    ports:
+      - 3000:3000
     volumes:
       - .:/workspace
     working_dir: /workspace
