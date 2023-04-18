@@ -1,31 +1,34 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import got from "got";
 
 const typeDefs = `#graphql
-  type Book {
-    title: String
-    author: String
+  type Model {
+    id: ID!
+    name: String!
+    modelVersions: [ModelVersion]!
+  }
+
+  type ModelVersion {
+    id: ID!
+    name: String!
+    downloadUrl: String!
   }
 
   type Query {
-    books: [Book]
+    model(id: ID!): Model
   }
 `;
 
-const books = [
-  {
-    title: "The Awakening",
-    author: "Kate Chopin",
-  },
-  {
-    title: "City of Glass",
-    author: "Paul Auster",
-  },
-];
-
 const resolvers = {
   Query: {
-    books: () => books,
+    model: async (_parent, args) => {
+      const data = await got(
+        `https://civitai.com/api/v1/models/${args.id}`
+      ).json();
+
+      return data;
+    },
   },
 };
 
