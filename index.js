@@ -13,6 +13,7 @@ const typeDefs = `#graphql
     id: ID!
     name: String!
     downloadUrl: String!
+    createdAt: String!
   }
 
   type Query {
